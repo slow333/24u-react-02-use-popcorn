@@ -1,0 +1,23 @@
+import styled from "styled-components";
+
+const ButtonDelete= styled.button`
+  position: absolute;
+  right: 2.4rem;
+
+  height: 1.8rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--color-red);
+  color: var(--color-background-900);
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    background-color: var(--color-red-dark);
+
+  }
+`
+
+export default ButtonDelete;

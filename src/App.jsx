@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {useEffect, useState} from 'react'
+import {getWatchedData} from "./data/movieData.js";
+import Box from "./components/Box.jsx";
+import MovieSearchList from "./components/MovieSearchList.jsx";
+import MovieWatchedSummary from "./components/MovieWatchedSummary.jsx";
+import MovieWatchedList from "./components/MovieWatchedList.jsx";
+import styled from "styled-components";
+import Navbar from "./components/Navbar.jsx";
+import {URL} from "./components/config.js";
+import Loader from "./components/Loader.jsx";
+import useGetMovies from "./hooks/useGetMovies.js";
+import Error from "./components/Error.jsx";
+import useGetMovieById from "./hooks/useGetMovieById.js";
+
+const Main = styled.div`
+  margin-top: 2.4rem;
+  height: calc(100vh - 7.2rem - 3 * 2.4rem);
+  display: flex;
+  gap: 2.4rem;
+  justify-content: center;
+`
 
 function App() {
-  const [count, setCount] = useState(0)
 
+  const average = (arr) =>
+       arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+
+  const [query, setQuery] = useState("");
+
+  const [id, setId] = useState("");
+
+  const [watched, setWatched] = useState(getWatchedData);
+
+  const { movies, loading: loadingMovie, total, error: errorMovie} = useGetMovies(query)
+  const {movieDetail, error: errorDetail, loading: loadingDetail} = useGetMovieById(id);
+  function handleId(id) {
+    setId(id ? '' : id);
+  }
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+       <>
+         <Navbar query={query} setQuery={setQuery} movies={movies} total={total}/>
+         <Main>
+           <Box>
+             {errorMovie && <Error>{errorMovie}</Error>}
+             {loadingMovie && <Loader/>}
+             {!loadingMovie && movies.length > 0 &&
+                  <MovieSearchList movies={movies} setId={handleId}/>}
+           </Box>
+           {id && <Box>
+
+           </Box>}
+           {!id && <Box>
+             <MovieWatchedSummary watched={watched}/>
+             <MovieWatchedList watched={watched}/>
+           </Box>}
+         </Main>
+       </>
+  );
 }
+
 
 export default App
