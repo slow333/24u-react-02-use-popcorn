@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
+import {usePopcorn} from "../context/PopcornContext.jsx";
 
 const Summary = styled.div`
   padding: 2.2rem 3.2rem 1.8rem 3.2rem;
@@ -26,7 +27,10 @@ const P = styled.p`
   gap: 0.8rem;
 `;
 
-const MovieWatchedSummary = ({watched}) => {
+const MovieWatchedSummary = () => {
+
+  const {watched} = usePopcorn();
+
   const average = (arr) =>
        arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
@@ -44,11 +48,11 @@ const MovieWatchedSummary = ({watched}) => {
            </P>
            <P>
              <span>⭐️</span>
-             <span>{avgImdbRating}</span>
+             <span>{avgImdbRating.toFixed(1)}</span>
            </P>
            <P>
              <span>🌟</span>
-             <span>{avgUserRating}</span>
+             <span>{avgUserRating.toFixed(1)}</span>
            </P>
            <P>
              <span>⏳</span>

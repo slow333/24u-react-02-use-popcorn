@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {useState} from "react";
+import {usePopcorn} from "../context/PopcornContext.jsx";
 
 const StarContainer = styled.div`
    display: flex;
@@ -7,31 +8,33 @@ const StarContainer = styled.div`
    gap: 3px;
 `;
 
-const Stars = ({rating, setRating}) => {
+const Stars = () => {
 
-  const [userRating, setUserRating] = useState(0);
-  console.log(userRating, rating)
+  const {userRating, setUserRating} = usePopcorn();
+
+  const [tempRating, setTempRating] = useState(0);
+  // console.log(tempRating, rating)
 
   return (
     <>
       <StarContainer>
         {Array.from({length: 8}, (_, idx) => {
-          if (idx < rating)
+          if (idx < userRating)
             return <FullStar key={idx}
-                             setRating={setRating}
+                             setUserRating={setUserRating}
                              index={idx}
-                             userRating={userRating}
-                             setUserRating={setUserRating} />
+                             tempRating={tempRating}
+                             setTempRating={setTempRating} />
           else
             return <EmptyStar key={idx}
-                              setRating={setRating}
+                              setUserRating={setUserRating}
                               index={idx}
-                              userRating={userRating}
-                              setUserRating={setUserRating} />
+                              tempRating={tempRating}
+                              setTempRating={setTempRating} />
         })
         }
         <div className='text-red-600 ms-4 text-3xl italic'>
-          {rating}
+          {userRating}
         </div>
       </StarContainer>
     </>
@@ -40,11 +43,11 @@ const Stars = ({rating, setRating}) => {
 
 export default Stars;
 
-function FullStar({setRating, index,setUserRating, userRating}) {
+function FullStar({setUserRating, index,setTempRating, tempRating}) {
   return (
-    <div onMouseEnter={() => setRating(index+1)}
-         onMouseLeave={() => userRating ? setRating(userRating) : setRating(0)}
-         onClick={() =>  setUserRating(index+1)}>
+    <div onMouseEnter={() => setUserRating(index+1)}
+         onMouseLeave={() => tempRating ? setUserRating(tempRating) : setUserRating(0)}
+         onClick={() =>  setTempRating(index+1)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
@@ -61,11 +64,11 @@ function FullStar({setRating, index,setUserRating, userRating}) {
   )
 }
 
-function EmptyStar({setRating, index, setUserRating}) {
+function EmptyStar({setUserRating, index, setTempRating}) {
   return (
-    <div onMouseEnter={() => setRating(index+1)}
-         onMouseLeave={() => setRating(0)}
-         onClick={() => setUserRating(index+1)}>
+    <div onMouseEnter={() => setUserRating(index+1)}
+         onMouseLeave={() => setUserRating(0)}
+         onClick={() => setTempRating(index+1)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="#fee"

@@ -2,8 +2,12 @@ import React from 'react';
 import StyledListWatched from "../styles/StyledListWatched.jsx";
 
 import StyledList, {Div, H3, Img, P} from "../styles/StyledList.jsx";
+import {usePopcorn} from "../context/PopcornContext.jsx";
 
-const MovieWatchedList = ({watched, userRating}) => {
+const MovieWatchedList = () => {
+
+  const {watched} = usePopcorn();
+
   return (
        <StyledListWatched>
          {watched.map((movie) => (

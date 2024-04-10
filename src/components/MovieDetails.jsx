@@ -2,6 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import ButtonAdd from "../styles/ButtonAdd.jsx";
 import Stars from "./Stars.jsx";
+import {usePopcorn} from "../context/PopcornContext.jsx";
 
 
 
@@ -56,10 +57,14 @@ const Rating = styled.p`
    gap: 2.4rem;
 `;
 
-const MovieDetails = ({movieDetail,onAddWatched, rating, setRating, watched}) => {
+const MovieDetails = () => {
+
+  const {movieDetail, handleAddWatched, userRating, setUserRating,watched}
+  = usePopcorn();
+
   const {Actors, Genre, Plot, Poster, Ratings, Runtime, Title, Year, imdbID, imdbRating}
     = movieDetail;
-  console.log(watched)
+
   const isSelected = watched.find(w => w.imdbID === imdbID)
   return (
     <Details>
@@ -75,9 +80,9 @@ const MovieDetails = ({movieDetail,onAddWatched, rating, setRating, watched}) =>
         <Rating>
           {isSelected
             ? <div>이미 본거에요</div>
-            : <Stars rating={rating} setRating={setRating}/>}
+            : <Stars />}
         </Rating>
-        <ButtonAdd onClick={() => onAddWatched(movieDetail)}>Add Watched</ButtonAdd>
+        <ButtonAdd onClick={() => handleAddWatched(movieDetail)}>Add Watched</ButtonAdd>
       </Section>
     </Details>
   );

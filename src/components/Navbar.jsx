@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
+import {usePopcorn} from "../context/PopcornContext.jsx";
 
 const StyledNavbar = styled.nav`
   display: grid;
@@ -49,7 +50,9 @@ const NumResults = styled.p`
   font-size: 1.8rem;
 `;
 
-const Navbar = ({query, setQuery, total}) => {
+const Navbar = () => {
+  const {query, setQuery, total} = usePopcorn();
+
   return (
        <StyledNavbar>
          <Logo>
