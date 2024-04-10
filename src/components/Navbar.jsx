@@ -47,14 +47,14 @@ const SearchInput = styled.input`
 const NumResults = styled.p`
   justify-self: end;
   font-size: 1.8rem;
-`
+`;
 
-const Navbar = ({query, setQuery, movies, total}) => {
+const Navbar = ({query, setQuery, total}) => {
   return (
        <StyledNavbar>
          <Logo>
            <Span role="img">🍿</Span>
-           <h1>usePopcorn</h1>
+           <H1>usePopcorn</H1>
          </Logo>
          <SearchInput
               type="text"

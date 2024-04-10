@@ -1,22 +1,25 @@
-import StyledList from "../styles/StyledList.jsx";
-import ListStyle, {Div, H3, Img, P} from "../styles/ListStyle.jsx";
+import React from "react";
+import StyledList, {Div, H3, Img, P} from "../styles/StyledList.jsx";
+import StyledListContainer from "../styles/StyledListContainer.jsx";
 
-function MovieSearchList({movies, setId}) {
+function MovieSearchList({movies, sendId, id}) {
+
   return (
-       <StyledList>
-         {movies?.map((movie) => (
-              <ListStyle key={movie.imdbID} onClick={() => setId(movie.imdbID)}>
-                <Img src={movie.Poster} alt={`${movie.Title} poster`}/>
-                <H3>{movie.Title}</H3>
-                <Div>
-                  <P>
-                    <span>🗓</span>
-                    <span>{movie.Year}</span>
-                  </P>
-                </Div>
-              </ListStyle>
-         ))}
-       </StyledList>
+     <StyledListContainer>
+       {movies?.map((movie) => (
+          <StyledList select={id === movie.imdbID} type='button' key={movie.imdbID}
+                      onClick={() => sendId(movie.imdbID)}>
+            <Img src={movie.Poster} alt={`${movie.Title} poster`}/>
+            <H3>{movie.Title}</H3>
+            <Div>
+              <P>
+                <span>🗓</span>
+                <span>{movie.Year}</span>
+              </P>
+            </Div>
+          </StyledList>
+       ))}
+     </StyledListContainer>
   );
 }
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import StyledListWatched from "../styles/StyledListWatched.jsx";
 
-import ListStyle, {Div, H3, Img, P} from "../styles/ListStyle.jsx";
+import StyledList, {Div, H3, Img, P} from "../styles/StyledList.jsx";
 
-const MovieWatchedList = ({watched}) => {
+const MovieWatchedList = ({watched, userRating}) => {
   return (
        <StyledListWatched>
          {watched.map((movie) => (
-              <ListStyle key={movie.imdbID}>
+              <StyledList key={movie.imdbID}>
                 <Img src={movie.Poster} alt={`${movie.Title} poster`}/>
                 <H3>{movie.Title}</H3>
                 <Div>
@@ -21,10 +21,10 @@ const MovieWatchedList = ({watched}) => {
                   </P>
                   <P>
                     <span>⏳</span>
-                    <span>{movie.runtime} min</span>
+                    <span>{movie.Runtime.split(" ")[0]} min</span>
                   </P>
                 </Div>
-              </ListStyle>
+              </StyledList>
          ))}
        </StyledListWatched>
   );

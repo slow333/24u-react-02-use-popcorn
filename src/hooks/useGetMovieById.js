@@ -13,7 +13,6 @@ function useGetMovieById(id) {
         const movieData = await res.json();
         if (!res.ok) throw new Error('데이터 수신 실패 💥💥💥');
         setMovieDetail(movieData);
-        console.log(movieData)
         setLoading(false)
       } catch (err) {
         setError(err.message)

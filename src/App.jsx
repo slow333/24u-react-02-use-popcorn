@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react'
-import {getWatchedData} from "./data/movieData.js";
 import Box from "./components/Box.jsx";
 import MovieSearchList from "./components/MovieSearchList.jsx";
 import MovieWatchedSummary from "./components/MovieWatchedSummary.jsx";
@@ -11,7 +10,6 @@ import useGetMovies from "./hooks/useGetMovies.js";
 import Error from "./components/Error.jsx";
 import useGetMovieById from "./hooks/useGetMovieById.js";
 import MovieDetails from "./components/MovieDetails.jsx";
-import movieDetails from "./components/MovieDetails.jsx";
 
 const Main = styled.div`
   margin-top: 2.4rem;
@@ -24,17 +22,38 @@ const Main = styled.div`
 function App() {
 
   const [query, setQuery] = useState("");
-  const [id, setId] = useState("");
+  const [id, setId] = useState(null);
 
-  const [watched, setWatched] = useState(getWatchedData);
+  const [watched, setWatched] = useState([]);
+  const [userRating, setUserRating] = useState(0)
 
   const { movies, loading: loadingMovie, total, error: errorMovie} = useGetMovies(query)
   const {movieDetail, error: errorDetail, loading: loadingDetail} = useGetMovieById(id);
-  function handleId(id) {
-    setId(id ? null : id);
+
+  function handleId(getId) {
+    if(id === null || getId !== id) setId(getId)
+    else setId(id ? null : getId);
   }
 
-  console.log(id)
+  function handleAddWatched(addedWatched) {
+    if(watched.find(watched => watched.imdbID === addedWatched.imdbID)) {
+      return setId(null)
+    }
+    setWatched(watched => [...watched, {...addedWatched, userRating: userRating }])
+    setId(null);
+    setUserRating(0);
+  }
+
+  useEffect(() => {
+    if(watched.length > 0)
+      localStorage.setItem("watchedMovies", JSON.stringify(watched))
+  }, [watched]);
+  useEffect(() => {
+    const lcMovies = localStorage.getItem("watchedMovies");
+    if(lcMovies === null) return;
+    setWatched(JSON.parse(lcMovies));
+  },[])
+
   return (
      <>
        <Navbar query={query} setQuery={setQuery} movies={movies} total={total}/>
@@ -43,12 +62,18 @@ function App() {
            {errorMovie && <Error>{errorMovie}</Error>}
            {loadingMovie && <Loader/>}
            {!loadingMovie && movies.length > 0 &&
-                <MovieSearchList movies={movies} setId={handleId}/>}
+                <MovieSearchList movies={movies} id={id} sendId={handleId}/>}
          </Box>
          {id && <Box>
            {errorDetail && <Error>{errorDetail}</Error>}
            {loadingDetail && <Loader/>}
-           {movieDetail && <MovieDetails movieDetail={movieDetails} />}
+           {movieDetail &&
+             <MovieDetails
+               movieDetail={movieDetail}
+               onAddWatched={handleAddWatched}
+               rating={userRating} setRating={setUserRating}
+               watched={watched}
+             />}
          </Box>}
          {!id && <Box>
            <MovieWatchedSummary watched={watched}/>

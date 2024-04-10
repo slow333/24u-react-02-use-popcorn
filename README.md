@@ -1,8 +1,31 @@
 # React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## vite react styled components에서 tailwind 사용
 
-Currently, two official plugins are available:
+> npm install -D tailwindcss postcss autoprefixer
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> npm i tailwind-styled-components
+
+> npx tailwindcss init -p
+
+> tailwind.config.js
+```ecmascript 6
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+  extend: {},
+  },
+  plugins: [],
+}
+```
+
+> index.css
+```ecmascript 6
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
